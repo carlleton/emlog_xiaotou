@@ -1,6 +1,6 @@
 # emlog_xiaotou
 emlog小偷插件，用来偷取其他网站文章
-# 使用方法
+## 使用方法
 1.将emlog_xiaotou打包zip<br>
 2.在emlog后台安装此插件，启用插件<br>
 
