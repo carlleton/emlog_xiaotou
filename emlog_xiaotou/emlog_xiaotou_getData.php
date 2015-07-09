@@ -57,11 +57,11 @@ function get_format($url){
 	$body.='<p>来自：<a href="'.$url.'" target="_blank">'.$remark.'</a></p>';
 	
 	$title = str_replace(array("\r\n", "\r", "\n"),"",strip_tags($title));
-	//$title = trim(str_replace('"','\"',$title));
-	//$body = str_replace('"','\"',$body);
+	$title = trim(str_replace('"','\"',$title));
+	$body = str_replace('"','\"',$body);
 	//$body=preg_replace("/\s/","",$body);
 
-	echo $title.'$$$$$'.$body;
+	echo '{"title":"'.$title.'","body":"'.$body.'","$remark":"'.$remark.'"}';
 }
 function curls($url, $timeout = '10'){
 	// 1. 初始化

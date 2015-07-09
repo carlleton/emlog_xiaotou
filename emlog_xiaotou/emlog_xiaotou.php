@@ -36,12 +36,11 @@ function emlog_xiaotou_option(){
 			url:url,
 			data:data,
 			success:function(su){
-				if(!su||su=='null'){alert('该网址无法正确解析！');console.log(su);return;}
-				var title=su.substr(0,su.indexOf('$$$$$'));
-				var content=su.substr(su.indexOf('$$$$$')+5);
+				var json = eval("("+su+")");console.log(json);
+				if(!json || json==null){alert('该网址无法正确解析！');return;}
 				$('#title_label').css('display','none');
-				$('#title').val(title);
-				editorMap['content'].html(content);//insertHtml
+				$('#title').val(json.title);
+				editorMap['content'].html(json.body);//insertHtml
 			},
 			error:function(a){
 				console.log(a);
