@@ -1,13 +1,19 @@
 <?php
 !defined('EMLOG_ROOT') && exit('access deined!');
 
+require_once('emlog_cache.php');
+
 function plugin_setting_view() {
+	$cacheName="xiaotou";
 	$DB = MySql::getInstance();
 	$cid = isset($_REQUEST["cid"])?intval($_REQUEST["cid"]):"";
 	$act = $_REQUEST["act"];
+	$cache = Cache_xiaotou::getInstance();
+	
 	if($act=='del'){
 		$sql="delete from ".DB_PREFIX."xiaotou where cid=".$cid;
 		$DB->query($sql);
+		$cache->update_cache($cacheName);
 		header("Location: ./plugin.php?plugin=emlog_xiaotou&setting=true");
 		return;
 	}
@@ -15,6 +21,7 @@ function plugin_setting_view() {
 		$sql="insert into ".DB_PREFIX."xiaotou(title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end) select title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end from ".DB_PREFIX."xiaotou where cid=".$cid;
 		
 		$DB->query($sql);
+		$cache->update_cache($cacheName);
 		header("Location: ./plugin.php?plugin=emlog_xiaotou&setting=true");
 		return;
 	}
@@ -33,6 +40,7 @@ function plugin_setting_view() {
 			$sql="UPDATE ".DB_PREFIX."xiaotou set title='$title',sitename='$sitename',siteurl='$siteurl',url_reg='$url_reg',title_start='$title_start',title_end='$title_end',body_start='$body_start',body_end='$body_end' where cid={$cid}";
 		}
 		$DB->query($sql);
+		$cache->update_cache($cacheName);
 		header("Location: ./plugin.php?plugin=emlog_xiaotou&setting=true");
 		return;
 	}
@@ -140,4 +148,5 @@ $query = $DB->query($sql.$limit);
 </div>
 <?php
 }
+
 ?>
