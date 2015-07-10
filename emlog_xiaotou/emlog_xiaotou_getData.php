@@ -1,6 +1,7 @@
 <?php
 header("content-type:text/html;charset=utf-8");
 require_once(dirname(__FILE__).'/../../../init.php');
+require_once('emlog_cache.php');
 
 $url=$_REQUEST["url"];
 if($url==''||$url==null){echo "null";return;}
@@ -8,8 +9,8 @@ if($url==''||$url==null){echo "null";return;}
 
 get_format($url);
 function get_format($url){
+	$cacheName="xiaotou";
 	if($url==''||$url=='http://'){echo "0";return;}
-	$DB = Database::getInstance();
 	
 	$remark='';
 	$title = '';
@@ -19,9 +20,9 @@ function get_format($url){
 	$body_start='';
 	$body_end='';
 	
-	$sql="select * from ".DB_PREFIX."xiaotou";
-	$query = $DB->query($sql);
-	while($rs = $DB->fetch_array($query)):
+	$cache = Cache_xiaotou::getInstance();
+	$query = $cache->readCache($cacheName);
+	while(list($key,$rs)=each($query)):
 		$url_reg=$rs["url_reg"];
 		$url_reg=str_replace("/","\\/",$url_reg);
 		$url_reg="/".$url_reg."/";
