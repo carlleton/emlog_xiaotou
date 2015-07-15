@@ -4,13 +4,13 @@ require_once(dirname(__FILE__).'/../../../init.php');
 require_once('emlog_cache.php');
 
 $url=$_REQUEST["url"];
-if($url==''||$url==null){echo "null";return;}
+if($url==''||$url==null){echo "null,没有url";return;}
 
 
 get_format($url);
 function get_format($url){
 	$cacheName="xiaotou";
-	if($url==''||$url=='http://'){echo "0";return;}
+	if($url==''||$url=='http://'){echo "null,url不对";return;}
 	
 	$remark='';
 	$title = '';
@@ -42,7 +42,7 @@ function get_format($url){
 	//$content = file_get_contents($url);
 	$content = curls($url);
 	
-	if($content==''){echo "null";return;}
+	if($content==''){echo "null,内容获取为空";return;}
 	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
 	
 	
@@ -64,7 +64,7 @@ function get_format($url){
 
 	echo $title.'$$$$$'.$body;
 }
-function curls($url, $timeout = '10'){
+function curls($url, $timeout = '20'){
 	// 1. 初始化
     $ch = curl_init();
     // 2. 设置选项，包括URL
