@@ -39,10 +39,15 @@ function get_format($url){
 	endwhile;
 	
 	
-	//$content = file_get_contents($url);
 	$content = curls($url);
 	
-	if($content==''){echo "null,内容获取为空";return;}
+	if($content==''){
+		$content = file_get_contents($url);
+		if($content==''){
+			echo "null,内容获取为空";
+			return;
+		}
+	}
 	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
 	
 	
