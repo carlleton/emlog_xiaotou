@@ -48,7 +48,7 @@ function get_format($url){
 			return;
 		}
 	}
-	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
+//	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
 	
 	
 	$content = substr($content, stripos($content, $title_start)+strlen($title_start));

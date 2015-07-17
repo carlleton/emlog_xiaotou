@@ -36,7 +36,7 @@ function emlog_xiaotou_option(){
 			url:url,
 			data:data,
 			success:function(su){
-				if(!su||su.indexOf('null')>-1){alert('该网址无法正确解析！');console.log(su);return;}
+				if(!su||su.indexOf('null')==0){alert('该网址无法正确解析！');console.log(su);return;}
 				
 				var json = eval("("+su+")");console.log(json);
 				if(!json || json==null){alert('该网址无法正确解析！');return;}
