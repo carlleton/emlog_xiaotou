@@ -48,7 +48,7 @@ function get_format($url){
 			return;
 		}
 	}
-	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
+//	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
 	
 	
 	$content = substr($content, stripos($content, $title_start)+strlen($title_start));
@@ -59,7 +59,7 @@ function get_format($url){
 	$body = substr($content, 0,stripos($content, $body_end));
 	
 	
-	$body = str_replace(array("\r\n", "\r", "\n"), "", $body);
+//	$body = str_replace(array("\r\n", "\r", "\n"), "", $body);
 	$body.='<p>来自：<a href="'.$url.'" target="_blank">'.$remark.'</a></p>';
 	
 	$title = str_replace(array("\r\n", "\r", "\n"),"",strip_tags($title));
