@@ -54,4 +54,11 @@ function emlog_xiaotou_option(){
 
 addAction('adm_writelog_head', 'emlog_xiaotou_option');
 
+function online_backup(){
+	$DB = MySql::getInstance();
+	global $tables;
+	$is_exist_online2_query = $DB->query('show tables like "'.DB_PREFIX.'xiaotou"');
+	if($DB->num_rows($is_exist_online2_query) != 0) array_push($tables, 'xiaotou');
+}
+addAction('data_prebakup', 'online_backup');
 ?>
