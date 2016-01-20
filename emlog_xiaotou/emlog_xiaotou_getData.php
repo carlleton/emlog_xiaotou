@@ -70,15 +70,11 @@ function get_format($url){
 	echo $title.'$$$$$'.$body;
 }
 function curls($url,$timeout = '20'){
-	$header=get_headers($url, 1);
-	$gzip=$header["Content-Encoding"];
 	// 1. 初始化
     $ch = curl_init();
     // 2. 设置选项，包括URL
     curl_setopt($ch, CURLOPT_URL, $url);
-	if($gzip=='gzip'){
-		curl_setopt($ch, CURLOPT_ENCODING,'gzip');
-	}
+	curl_setopt($ch, CURLOPT_ENCODING,'');//允许获取gzip压缩格式
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HEADER, 0);
