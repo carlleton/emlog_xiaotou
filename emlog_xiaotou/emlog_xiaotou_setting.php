@@ -18,7 +18,7 @@ function plugin_setting_view() {
 		return;
 	}
 	if($act=='copy'){
-		$sql="insert into ".DB_PREFIX."xiaotou(title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end) select title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end from ".DB_PREFIX."xiaotou where cid=".$cid;
+		$sql="insert into ".DB_PREFIX."xiaotou(title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end,charset) select title,sitename,siteurl,url_reg,title_start,title_end,body_start,body_end,charset from ".DB_PREFIX."xiaotou where cid=".$cid;
 		
 		$DB->query($sql);
 		$cache->update_cache($cacheName);
@@ -34,10 +34,11 @@ function plugin_setting_view() {
 		$title_end=isset($_POST["title_end"])?addslashes($_POST["title_end"]):"";
 		$body_start=isset($_POST["body_start"])?addslashes($_POST["body_start"]):"";
 		$body_end=isset($_POST["body_end"])?addslashes($_POST["body_end"]):"";
+		$charset=isset($_POST["charset"])?addslashes($_POST["charset"]):"";
 		if($cid==''){
-			$sql="insert into ".DB_PREFIX."xiaotou set title='$title',sitename='$sitename',siteurl='$siteurl',url_reg='$url_reg',title_start='$title_start',title_end='$title_end',body_start='$body_start',body_end='$body_end'";
+			$sql="insert into ".DB_PREFIX."xiaotou set title='$title',sitename='$sitename',siteurl='$siteurl',url_reg='$url_reg',title_start='$title_start',title_end='$title_end',body_start='$body_start',body_end='$body_end',charset='$charset'";
 		}else{
-			$sql="UPDATE ".DB_PREFIX."xiaotou set title='$title',sitename='$sitename',siteurl='$siteurl',url_reg='$url_reg',title_start='$title_start',title_end='$title_end',body_start='$body_start',body_end='$body_end' where cid={$cid}";
+			$sql="UPDATE ".DB_PREFIX."xiaotou set title='$title',sitename='$sitename',siteurl='$siteurl',url_reg='$url_reg',title_start='$title_start',title_end='$title_end',body_start='$body_start',body_end='$body_end',charset='$charset' where cid={$cid}";
 		}
 		$DB->query($sql);
 		$cache->update_cache($cacheName);
@@ -68,7 +69,8 @@ function plugin_setting_view() {
 				"title_start"=>"",
 				"title_end"=>"",
 				"body_start"=>"",
-				"body_end"=>""
+				"body_end"=>"",
+				"charset"=>"",
 			);
 		}else{
 			$sql = "select * from ".DB_PREFIX."xiaotou where cid=".$cid;
@@ -89,6 +91,7 @@ function plugin_setting_view() {
 		<tr><td>正则识别：</td><td><input type="text" name="url_reg" value="<?php echo $rs["url_reg"] ?>" style="width:300px;" /></td></tr>
 		<tr><td>网站名称：</td><td><input type="text" name="sitename" value="<?php echo $rs["sitename"] ?>" style="width:300px;" /></td></tr>
 		<tr><td>网站地址：</td><td><input type="text" name="siteurl" value="<?php echo $rs["siteurl"] ?>" style="width:300px;" /></td></tr>
+		<tr><td>网站编码：</td><td><input type="text" name="charset" value="<?php echo $rs["charset"] ?>" style="width:300px;" /></td></tr>
 		<tr><td>标题开始：</td><td>
 			<textarea name="title_start" rows="5" cols="10" style="width:300px;height:50px;"><?php echo $rs["title_start"] ?></textarea>
 		</td></tr>
@@ -124,6 +127,7 @@ $query = $DB->query($sql.$limit);
 			<th><b>序号</b></th>
 			<th><b>标识</b></th>
 			<th><b>网站名称</b></th>
+			<th><b>编码</b></th>
 			<th><b>操作</b></th>
 		</tr>
 	</thead>
@@ -133,6 +137,7 @@ $query = $DB->query($sql.$limit);
 			<td><?php echo $rs["cid"]; ?></td> 
 			<td><?php echo $rs["title"]; ?></td>
 			<td><a href="<?php echo $rs["siteurl"]; ?>" target="_blank"><?php echo $rs["sitename"]; ?></a></td>
+			<td><?php echo $rs["charset"]==""?"UTF-8":$rs["charset"]; ?></td>
 			<td>
 				<a href='./plugin.php?plugin=emlog_xiaotou&act=edit&cid=<?php echo $rs["cid"]; ?>'>编辑</a>
 				<a onclick='if(!confirm("您确认要复制？"))return false;' href='./plugin.php?plugin=emlog_xiaotou&act=copy&cid=<?php echo $rs["cid"]; ?>'>复制</a>

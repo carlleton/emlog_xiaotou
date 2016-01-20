@@ -6,7 +6,6 @@ require_once('emlog_cache.php');
 $url=$_REQUEST["url"];
 if($url==''||$url==null){echo "null,没有url";return;}
 
-
 get_format($url);
 function get_format($url){
 	$cacheName="xiaotou";
@@ -19,6 +18,7 @@ function get_format($url){
 	$title_end='';
 	$body_start='';
 	$body_end='';
+	$charset='';
 	
 	$cache = Cache_xiaotou::getInstance();
 	$query = $cache->readCache($cacheName);
@@ -26,7 +26,6 @@ function get_format($url){
 		$url_reg=$rs["url_reg"];
 		$url_reg=str_replace("/","\\/",$url_reg);
 		$url_reg="/".$url_reg."/";
-		
 		preg_match($url_reg,$url,$result);
 		if($result){
 			$remark=$rs["sitename"];
@@ -34,6 +33,7 @@ function get_format($url){
 			$title_end=$rs["title_end"];
 			$body_start=$rs["body_start"];
 			$body_end=$rs["body_end"];
+			$charset=$rs["charset"];
 			break;
 		}
 	endwhile;
@@ -42,14 +42,14 @@ function get_format($url){
 	$content = curls($url);
 	
 	if($content==''){
-		$content = file_get_contents($url);
-		if($content==''){
-			echo "null,内容获取为空";
-			return;
-		}
+		echo "null,内容获取为空";
+		return;
 	}
-//	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
+	if($charset!='' && $charset!='UTF-8'){
+		$content=mb_convert_encoding($content,'utf-8','GBK,UTF-8,ASCII');
+	}
 	
+//	$content = str_replace(array("\r\n", "\r", "\n"), "", $content);
 	
 	$content = substr($content, stripos($content, $title_start)+strlen($title_start));
 	$title= substr($content,0,stripos($content, $title_end));
@@ -69,11 +69,16 @@ function get_format($url){
 
 	echo $title.'$$$$$'.$body;
 }
-function curls($url, $timeout = '20'){
+function curls($url,$timeout = '20'){
+	$header=get_headers($url, 1);
+	$gzip=$header["Content-Encoding"];
 	// 1. 初始化
     $ch = curl_init();
     // 2. 设置选项，包括URL
     curl_setopt($ch, CURLOPT_URL, $url);
+	if($gzip=='gzip'){
+		curl_setopt($ch, CURLOPT_ENCODING,'gzip');
+	}
     curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -81,7 +86,9 @@ function curls($url, $timeout = '20'){
     $info = curl_exec($ch);
     // 4. 释放curl句柄
     curl_close($ch);
-
+	if($info==''){
+		$info = file_get_contents("compress.zlib://".$url);//支持gzip
+	}
     return $info;
 }
 ?>
