@@ -49,8 +49,8 @@ class Cache_xiaotou{
 			$cachefile = EMLOG_ROOT.'/content/plugins/emlog_xiaotou/'.$cacheName.'.php';
 			// 如果缓存文件不存在则自动生成缓存文件
 			if (!is_file($cachefile) || filesize($cachefile) <= 0) {
-				if($sql=="")$sql=sql_define($cacheName);
-				if($sql=="")return;
+				//if($sql=="")$sql=sql_define($cacheName);
+				//if($sql=="")return;
 				$this->update_cache($cacheName);
 			}
 			if ($fp = fopen($cachefile, 'r')) {

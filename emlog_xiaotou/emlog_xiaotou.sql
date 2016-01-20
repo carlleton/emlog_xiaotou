@@ -29,6 +29,7 @@ CREATE TABLE `emlog_xiaotou` (
   `body_start` text,
   `body_end` text,
   `lastlink_type` smallint(4) default NULL,
+  `charset` varchar(200) default NULL COMMIT '编码',
   PRIMARY KEY  (`cid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 

@@ -22,6 +22,7 @@ function callback_init(){
 		  `body_start` text,
 		  `body_end` text,
 		  `lastlink_type` smallint(4) default NULL,
+		  `charset` varchar(200) default NULL COMMIT '±àÂë',
 		  PRIMARY KEY  (`cid`)
 		)
 		".$add;	
